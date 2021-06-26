@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: cb1c3158bbc88ce6dde580abf8382d1182b1afc8fa81452fb62468206c98aa15
+-- hash: f25f5d2c7ada7ee2bca079b6f16e150804d95831080cea7c80ce5b0d77c69d91
 
 name:           raft-hs
 version:        0.1.0.0
@@ -28,7 +28,6 @@ source-repository head
 library
   exposed-modules:
       DB
-      Lib
       NetworkManager
       Raft
   other-modules:
