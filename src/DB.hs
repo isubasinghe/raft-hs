@@ -22,7 +22,7 @@ import qualified Data.Map             as Map
 type Key = String
 type Value = String
 
-data KeyValue = KeyValue !(Map.Map Key Value)
+newtype KeyValue = KeyValue (Map.Map Key Value)
     deriving (Typeable)
 
 $(deriveSafeCopy 0 'base ''KeyValue)
@@ -41,3 +41,10 @@ lookupKey key
          return (Map.lookup key m)
 
 $(makeAcidic ''KeyValue ['insertKey, 'lookupKey])
+
+
+asd :: IO ()
+asd = do 
+  acid <- openLocalState (KeyValue Map.empty)
+
+  closeAcidState acid
