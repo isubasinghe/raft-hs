@@ -49,6 +49,7 @@ app = do
     key <- param "key"
     value <- param "value"
     webM $ modify key value db
+    redirect $ pack $ "/read/" ++ key
   get "/read/:key" $ do
     db <- ask
     key <- param "key"
