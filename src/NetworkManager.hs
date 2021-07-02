@@ -67,3 +67,7 @@ sampleConfig = Config
         }
     ] 
     }
+
+data PeerConnectionManager = PeerConnectionManager
+  deriving(Show)
+

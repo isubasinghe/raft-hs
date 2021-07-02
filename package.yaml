@@ -30,7 +30,11 @@ dependencies:
 - bytestring ==0.10.12.0
 - serialise ==0.2.3.0
 - optparse-applicative ==0.16.1.0
-
+- scotty ==0.12
+- wai-extra ==3.1.6
+- stm ==2.5.0.0
+- data-default ==0.7.1.1
+- data-default-class ==0.1.2.0
 library:
   source-dirs: src
 

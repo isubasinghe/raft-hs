@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f25f5d2c7ada7ee2bca079b6f16e150804d95831080cea7c80ce5b0d77c69d91
+-- hash: c6b749e5528655beb0582024188967d37f284f0efc5488e3e0954d491f99d675
 
 name:           raft-hs
 version:        0.1.0.0
@@ -27,6 +27,7 @@ source-repository head
 
 library
   exposed-modules:
+      API
       DB
       NetworkManager
       Raft
@@ -39,12 +40,17 @@ library
     , base >=4.7 && <5
     , bytestring ==0.10.12.0
     , containers ==0.6.2.1
+    , data-default ==0.7.1.1
+    , data-default-class ==0.1.2.0
     , mtl ==2.2.2
     , optparse-applicative ==0.16.1.0
     , safecopy ==0.10.4.2
+    , scotty ==0.12
     , serialise ==0.2.3.0
+    , stm ==2.5.0.0
     , text ==1.2.4.1
     , tomland ==1.3.3.0
+    , wai-extra ==3.1.6
   default-language: Haskell2010
 
 executable raft-hs-exe
@@ -60,13 +66,18 @@ executable raft-hs-exe
     , base >=4.7 && <5
     , bytestring ==0.10.12.0
     , containers ==0.6.2.1
+    , data-default ==0.7.1.1
+    , data-default-class ==0.1.2.0
     , mtl ==2.2.2
     , optparse-applicative ==0.16.1.0
     , raft-hs
     , safecopy ==0.10.4.2
+    , scotty ==0.12
     , serialise ==0.2.3.0
+    , stm ==2.5.0.0
     , text ==1.2.4.1
     , tomland ==1.3.3.0
+    , wai-extra ==3.1.6
   default-language: Haskell2010
 
 test-suite raft-hs-test
@@ -82,11 +93,16 @@ test-suite raft-hs-test
     , base >=4.7 && <5
     , bytestring ==0.10.12.0
     , containers ==0.6.2.1
+    , data-default ==0.7.1.1
+    , data-default-class ==0.1.2.0
     , mtl ==2.2.2
     , optparse-applicative ==0.16.1.0
     , raft-hs
     , safecopy ==0.10.4.2
+    , scotty ==0.12
     , serialise ==0.2.3.0
+    , stm ==2.5.0.0
     , text ==1.2.4.1
     , tomland ==1.3.3.0
+    , wai-extra ==3.1.6
   default-language: Haskell2010

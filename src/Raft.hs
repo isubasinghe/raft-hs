@@ -63,5 +63,6 @@ data RequestVoteResponse = RequestVoteResponse Int Bool
 
 instance Serialise RequestVoteResponse
 
-appendEntries :: RaftState -> (RaftState, AppendEntriesResponse)
-appendEntries s = undefined
+
+
+
