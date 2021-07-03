@@ -10,15 +10,21 @@ import Data.Acid
 import Data.Default.Class
 import Data.Functor ((<&>))
 import qualified Data.Map as Map
+import Data.Maybe (fromMaybe)
 import Data.String
 import Data.Text.Lazy (Text, pack, unpack)
 import Network.Wai.Middleware.RequestLogger
+import System.Environment
+import Text.Read (readMaybe)
 import Web.Scotty.Trans
 
 newtype DBState = DBState {state :: AcidState KeyValue}
 
 newtype WebM a = WebM {runWebM :: ReaderT DBState IO a}
   deriving (Applicative, Functor, Monad, MonadIO, MonadReader DBState)
+
+portEnvKey :: String
+portEnvKey = "PORT"
 
 webM :: MonadTrans t => WebM a -> t WebM a
 webM = lift
@@ -38,8 +44,10 @@ modify key value db = do
 runApp :: IO ()
 runApp = do
   acid <- openLocalState $ KeyValue Map.empty
+  portString <- lookupEnv "PORT"
+  let port = fromMaybe 3000 $ maybe (Just 3000) (readMaybe :: String -> Maybe Int) portString
   let runActionToIO m = runReaderT (runWebM m) $ DBState acid
-  scottyT 3000 runActionToIO app
+  scottyT port runActionToIO app
 
 app :: ScottyT Text WebM ()
 app = do
