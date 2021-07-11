@@ -1,0 +1,13 @@
+server.port = 3333
+server.host = "127.0.0.1"
+id = 0
+
+[[peer]]
+  host = "127.0.0.1"
+  port = 3334
+  id = 1
+
+[[peer]]
+  host = "127.0.0.1"
+  port = 3335
+  id = 2

@@ -58,12 +58,12 @@ sampleConfig = Config
         Peer 
         {  host = Host "127.0.0.1"
         ,  port = Port 3334
-        ,  peerID = 2
+        ,  peerID = 1
         },
         Peer 
         {  host = Host "127.0.0.1"
         ,  port = Port 3335
-        ,  peerID = 3
+        ,  peerID = 2
         }
     ] 
     }
