@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
-
+import qualified Data.Text.IO as TIO
 import API
 import CLI
 import Options.Applicative
@@ -14,7 +14,7 @@ main = do
   config <- configText options
   case config of 
     Right r -> runApp r
-    Left l -> traverse_ print l
+    Left l -> TIO.putStrLn $ Toml.prettyTomlDecodeErrors l
   where
     opts =
       info
