@@ -17,6 +17,7 @@ import Network.Wai.Middleware.RequestLogger
 import System.Environment
 import Text.Read (readMaybe)
 import Web.Scotty.Trans
+import qualified NetworkManager as NM
 
 newtype DBState = DBState {state :: AcidState KeyValue}
 
@@ -41,8 +42,8 @@ modify key value db = do
   where
     acid = state db
 
-runApp :: IO ()
-runApp = do
+runApp :: NM.Config -> IO ()
+runApp config = do
   acid <- openLocalState $ KeyValue Map.empty
   portString <- lookupEnv "PORT"
   let port = fromMaybe 3000 $ maybe (Just 3000) (readMaybe :: String -> Maybe Int) portString

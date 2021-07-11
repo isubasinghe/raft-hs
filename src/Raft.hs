@@ -2,13 +2,18 @@
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE DeriveGeneric      #-}
 {-# LANGUAGE TypeFamilies       #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 
 module Raft where
+import Prelude hiding (log, id)
 import GHC.Generics
-import NetworkManager
 import Data.ByteString
 import Codec.Serialise
+import Control.Concurrent.MVar
+import Control.Monad.Reader
+import NetworkManager as NM
+
 
 newtype CommitEntry = CommitEntry (ByteString, Integer)
   deriving(Show, Generic)
@@ -24,7 +29,8 @@ instance Serialise CommitEntry
 data NodeState = Leader | Follower
 
 data RaftState = RaftState
-  {  currentTerm :: Int
+  {  id          :: Int  
+  ,  currentTerm :: Int
   ,  votedFor    :: Maybe Int
   ,  log         :: [CommitEntry]
   ,  commitIndex :: Int
@@ -33,6 +39,19 @@ data RaftState = RaftState
   ,  matchIndex  :: Maybe [Int]
   }
   deriving(Show, Eq, Generic)
+
+
+newRaftState :: Int -> RaftState
+newRaftState id = RaftState 
+  { id = 0
+  , currentTerm = 0
+  , votedFor = Nothing 
+  , log = []
+  , commitIndex = 0
+  , lastApplied = 0
+  , nextIndex = Nothing 
+  , matchIndex = Nothing  
+  }
 
 
 data RequestMessage = AppendEntries 
@@ -66,3 +85,6 @@ instance Serialise RequestVoteResponse
 
 
 
+
+-- runRaftService :: NM.Config -> IO ()
+-- runRaftService config = 
