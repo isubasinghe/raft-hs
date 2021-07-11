@@ -15,11 +15,11 @@ import Control.Monad.Reader
 import NetworkManager as NM
 
 class ApplicationEncDec a where
-  decode :: ByteString -> a
+  decode :: ByteString -> Maybe a
   encode :: a -> ByteString
 
 class ApplicationEncDec a => RaftListener a where
-  handle :: a -> IO ()
+  handle :: Maybe a -> IO ()
 
 newtype CommitEntry = CommitEntry (ByteString, Integer)
   deriving(Show, Generic)
