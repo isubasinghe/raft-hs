@@ -43,7 +43,7 @@ data RaftState = RaftState
 
 newRaftState :: Int -> RaftState
 newRaftState id = RaftState 
-  { id = 0
+  { id = id
   , currentTerm = 0
   , votedFor = Nothing 
   , log = []
