@@ -1,15 +1,15 @@
-{-# OPTIONS -Wno-unused-top-binds #-}
-{-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE BlockArguments #-}
 
 module NetworkManager where
-import Control.Concurrent ( forkIO, threadDelay )
+import Control.Monad.IO.Class (MonadIO)
+import Debug.Trace
+import Control.Concurrent ( forkIO, forkFinally, threadDelay )
 import Control.Concurrent.STM.TQueue ( newTQueueIO, TQueue, readTQueue )
 import Network.Socket
-import Network.Socket.ByteString (sendAll)
+import Network.Socket.ByteString (recv, sendAll)
 import Data.Text(Text, unpack)
 import Toml (TomlCodec, (.=))
+import qualified Data.Map as M
 import qualified Data.Text.IO as TIO-- add 'TomlBiMap' and 'Key' here optionally
 import qualified Toml
 import qualified Control.Exception as E
@@ -17,6 +17,8 @@ import qualified Data.ByteString.Char8 as C
 import Control.Monad.State.Lazy (forever)
 import Control.Monad.Cont (forever)
 import GHC.Conc (atomically)
+import Network.Socket (setCloseOnExecIfNeeded)
+import Raft
 
 data Peer = Peer 
     {  host       :: Host 
@@ -34,7 +36,11 @@ data Config = Config
     deriving(Show, Eq)
 
 newtype Port = Port Int 
-    deriving(Show, Eq)
+    deriving(Eq)
+
+instance Show Port where
+    show p = case p of 
+                Port p' -> show p'
 
 newtype Host = Host Text
     deriving(Eq)
@@ -42,6 +48,12 @@ newtype Host = Host Text
 instance Show Host where
     show h = case h of
         Host t -> unpack t
+
+data NetworkManager = NetworkManager 
+    { connections :: M.Map Int (TQueue Int)
+    , clients     :: [Socket]
+    , raft        :: RaftState
+    }
 
 peerCodec :: TomlCodec Peer
 peerCodec = Peer
@@ -99,8 +111,6 @@ connectClient' p c = do
             forever $ do
                 d <- atomically $ readTQueue c
                 sendAll s "hello"
-                pure ()
-            pure ()
 
 connectClient :: Peer -> IO (TQueue Int)
 connectClient p = do
@@ -111,6 +121,40 @@ connectClient p = do
 
 startService :: Config -> IO ()
 startService c = do
-    let p = peers c
-    chs <- traverse connectClient p
-    pure () 
+    
+    -- let p = peers c
+    -- chs <- traverse connectClient p
+    -- let x = M.fromList $ zip (map peerID p) chs
+
+    addr <- resolve
+    E.bracket (open addr) close loop
+
+    where
+        resolve = do
+            let myhost = show $ serverHost c
+            let myport = show $ serverPort c
+            let hints = defaultHints 
+                    { addrFlags = [AI_PASSIVE]
+                    , addrSocketType = Stream
+                    }
+            head <$> getAddrInfo (Just hints) (Just myhost) (Just myport)
+        
+        open addr = do
+            sock <- socket (addrFamily addr) (addrSocketType addr) (addrProtocol addr)
+            setSocketOption sock ReuseAddr 1
+            withFdSocket sock setCloseOnExecIfNeeded
+            bind sock $ addrAddress addr
+            listen sock 1024
+            pure sock
+
+        loop sock = forever $ do
+            (conn, _peer) <- accept sock
+            forkFinally (fn conn) (const $ gracefulClose conn 5000)
+        
+        fn conn = do
+            msg <- recv conn 1024
+            traceIO $ C.unpack msg
+            threadDelay $ 1000 * 100
+            -- force catch client disconnect
+            sendAll conn "pong"
+            fn conn

@@ -12,7 +12,6 @@ import Data.ByteString
 import Codec.Serialise
 import Control.Concurrent.MVar
 import Control.Monad.Reader
-import NetworkManager as NM
 
 class ApplicationEncDec a where
   decode :: ByteString -> Maybe a
@@ -87,10 +86,3 @@ data RequestVoteResponse = RequestVoteResponse Int Bool
   deriving(Show, Eq, Generic)
 
 instance Serialise RequestVoteResponse
-
-
-
-
-
--- runRaftService :: NM.Config -> IO ()
--- runRaftService config = 
