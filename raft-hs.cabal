@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 83c8692517e05cbebfdf842b3303a211f3466b71ff08c7682be112c7d9326925
+-- hash: 585e13d504d7486f4f62f97ba1cb76fa7d9d47d63ec167bdd31bcae1b8258883
 
 name:           raft-hs
 version:        0.1.0.0
@@ -45,6 +45,7 @@ library
     , directory ==1.3.6.0
     , hspec ==2.7.10
     , mtl ==2.2.2
+    , network ==3.1.1.1
     , optparse-applicative ==0.16.1.0
     , safecopy ==0.10.4.2
     , scotty ==0.12
@@ -73,6 +74,7 @@ executable raft-hs-exe
     , directory ==1.3.6.0
     , hspec ==2.7.10
     , mtl ==2.2.2
+    , network ==3.1.1.1
     , optparse-applicative ==0.16.1.0
     , raft-hs
     , safecopy ==0.10.4.2
@@ -102,6 +104,7 @@ test-suite raft-hs-test
     , directory ==1.3.6.0
     , hspec ==2.7.10
     , mtl ==2.2.2
+    , network ==3.1.1.1
     , optparse-applicative ==0.16.1.0
     , raft-hs
     , safecopy ==0.10.4.2
