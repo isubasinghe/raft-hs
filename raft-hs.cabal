@@ -3,17 +3,15 @@ cabal-version: 1.12
 -- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
---
--- hash: 585e13d504d7486f4f62f97ba1cb76fa7d9d47d63ec167bdd31bcae1b8258883
 
 name:           raft-hs
 version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/raft-hs#readme>
 homepage:       https://github.com/githubuser/raft-hs#readme
 bug-reports:    https://github.com/githubuser/raft-hs/issues
-author:         Author name here
-maintainer:     example@example.com
-copyright:      2021 Author name here
+author:         Isitha Subasinghe
+maintainer:     undefined
+copyright:      2021 Isitha Subasinghe
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple

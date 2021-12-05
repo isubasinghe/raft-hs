@@ -3,7 +3,7 @@ version:             0.1.0.0
 github:              "githubuser/raft-hs"
 license:             BSD3
 author:              "Isitha Subasinghe"
-maintainer:          "{sub} [asin] |ghe| [isitha] (at) gmail (dot) com"
+maintainer:          "undefined"
 copyright:           "2021 Isitha Subasinghe"
 
 extra-source-files:
