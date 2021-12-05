@@ -14,10 +14,10 @@ import Data.Maybe (fromMaybe)
 import Data.String
 import Data.Text.Lazy (Text, pack, unpack)
 import Network.Wai.Middleware.RequestLogger
+import qualified NetworkManager as NM
 import System.Environment
 import Text.Read (readMaybe)
 import Web.Scotty.Trans
-import qualified NetworkManager as NM
 
 newtype DBState = DBState {state :: AcidState KeyValue}
 

@@ -1,18 +1,20 @@
 {-# LANGUAGE OverloadedStrings #-}
+
 module Main where
-import qualified Data.Text.IO as TIO
+
 import API
 import CLI
-import Options.Applicative
-import Data.Foldable(traverse_)
-
-import qualified Toml
+import Data.Foldable (traverse_)
+import qualified Data.Text.IO as TIO
 import qualified NetworkManager as NM
+import Options.Applicative
+import qualified Toml
+
 main :: IO ()
 main = do
   options <- execParser opts
   config <- configText options
-  case config of 
+  case config of
     Right r -> runApp r
     Left l -> TIO.putStrLn $ Toml.prettyTomlDecodeErrors l
   where
@@ -26,4 +28,3 @@ main = do
     configText options = do
       let fileName = configFile options
       Toml.decodeFileEither NM.configCodec fileName
-      
